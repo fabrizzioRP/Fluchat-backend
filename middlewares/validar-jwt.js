@@ -3,18 +3,18 @@ const jwt = require('jsonwebtoken');
 
 const validarJWT = ( req, res, next ) => {
 
-    // Leer token
-    const token = req.header('Authorization');
-    //console.log( token );
-
-    if ( !token ) {
-        return res.status(401).json({
-            ok: false,
-            msg: 'No hay token en la peticion'
-        });
-    }
-
     try {
+
+        // Leer token
+        const token = req.header('Authorization');
+        //console.log( token );
+
+        if ( !token ) {
+            return res.status(401).json({
+                ok: false,
+                msg: 'No hay token en la peticion'
+            });
+        }
 
         const { uid } = jwt.verify( token , process.env.JWT_KEY );
 
