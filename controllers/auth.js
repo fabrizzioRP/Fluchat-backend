@@ -19,22 +19,22 @@ const crearUsuarios = async ( req, res = response ) => {
             });
         }
 
-        const usuario = new Usuario( req.body );
+        const usuarioDB = new Usuario( req.body );
 
         // Encriptar Contraseña
         const salt = bcrypt.genSaltSync();
-        usuario.password = bcrypt.hashSync( password , salt  );
+        usuarioDB.password = bcrypt.hashSync( password , salt  );
 
         // graba en la base de datos
-        await usuario.save();
+        await usuarioDB.save();
 
         // JWT
-        const token = await generateJwt( usuario.id );
+        const token = await generateJwt( usuarioDB.id );
     
         res.json({ 
             ok: true,
             msg: 'Usuario Creado',
-            usuario,
+            usuarioDB,
             token
         });
         
@@ -105,12 +105,13 @@ const renewToken = async ( req , res = response ) => {
 
     const token = await generateJwt( uid );
     
-    const usuario = await Usuario.findById( uid );
+    const usuarioDB = await Usuario.findById( uid );
 
     res.json({
         ok: true,
         msg: 'RenewToken',
-        usuario
+        usuarioDB,
+        token
         // uid: req.uid
     });
 
